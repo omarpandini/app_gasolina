@@ -34,10 +34,10 @@ class _BodyState extends State<Body> {
   final _logo = AssetImage('images/logo.png');
   final String _texto1 =
       'Saiba qual a melhor opção para abastecimento do seu carro';
+  String _resultado = '';
 
   var _estiloTexto1 = TextStyle(fontSize: 25);
   var _textoMsgErro = TextStyle(fontSize: 20, color: Colors.red);
-  var _msgErro = '';
 
   TextEditingController _textEditingController1 = TextEditingController();
   TextEditingController _textEditingController2 = TextEditingController();
@@ -48,8 +48,19 @@ class _BodyState extends State<Body> {
 
     print(precoAlcool);
     if (precoAlcool == null || precoGasolina == null) {
-      _msgErro = 'Atençao, valores inválidos';
-      print('Atençao, valores inválidos');
+      _resultado =
+          'Atençao, valores inválidos. Utilize somente valores numéricos.';
+    } else {
+      //Efetua o cálculo
+      double _result = precoAlcool / precoGasolina;
+
+      if (_result >= 0.7) {
+        _resultado = 'Melhor abastecer com gasolina';
+      } else {
+        _resultado = 'Melhor abastecer com álcool';
+      }
+
+      print('Resultado : ' + _result.toString());
     }
   }
 
@@ -72,10 +83,6 @@ class _BodyState extends State<Body> {
                 textAlign: TextAlign.start,
                 style: _estiloTexto1,
               ),
-            ),
-            Text(
-              '$_msgErro',
-              style: _textoMsgErro,
             ),
             SizedBox(
               width: double.infinity,
@@ -105,7 +112,7 @@ class _BodyState extends State<Body> {
                 child: ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        _msgErro = '';
+                        _resultado = '';
                         _calcular();
                       });
                     },
@@ -118,8 +125,8 @@ class _BodyState extends State<Body> {
             Padding(
               padding: EdgeInsets.only(top: 20),
               child: Text(
-                'Resultado',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                _resultado,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             )
           ],
